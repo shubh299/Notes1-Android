@@ -1,5 +1,7 @@
 package com.example.shubham.notes;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,12 +12,22 @@ import android.widget.Toast;
 public class NoteActivity extends AppCompatActivity {
     EditText noteTitle;
     EditText noteContent;
+    String noteFileName;
+    Note loadedNote;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note);
         noteTitle = (EditText) findViewById(R.id.note_title);
         noteContent = (EditText) findViewById(R.id.note_content);
+        noteFileName = getIntent().getStringExtra("NOTE_FILE");
+        if (noteFileName!=null && !noteFileName.isEmpty()){
+            loadedNote = NoteOperations.getNoteByName(this,noteFileName);
+            if(loadedNote!=null) {
+                noteTitle.setText(loadedNote.getTitle());
+                noteContent.setText(loadedNote.getNote());
+            }
+        }
     }
 
     @Override
@@ -31,6 +43,7 @@ public class NoteActivity extends AppCompatActivity {
                 saveNote();
                 break;
             case R.id.delete_note:
+                deleteNote();
                 break;
             default:
                 break;
@@ -38,8 +51,39 @@ public class NoteActivity extends AppCompatActivity {
         return true;
     }
 
+    private void deleteNote(){
+        if(loadedNote == null){
+            finish();
+        }
+        else{
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this).setTitle("Delete Note").setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    NoteOperations.deleteNote(getApplicationContext(),loadedNote.getDateTime()+NoteOperations.fileExtension);
+                    Toast.makeText(getApplicationContext(),"Note Deleted",Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }).setNegativeButton("NO",null).setCancelable(true);
+            dialog.show();
+        }
+    }
+
     private void saveNote() {
-        Note note = new Note(System.currentTimeMillis() , noteTitle.getText().toString() , noteContent.getText().toString() );
+        Note note;
+
+        if(noteTitle.getText().toString().isEmpty()&& noteContent.getText().toString().isEmpty()){
+            finish();
+            return;
+        }
+
+        if(loadedNote==null){
+            note = new Note(System.currentTimeMillis() , noteTitle.getText().toString() , noteContent.getText().toString() );
+        }
+        else{
+            note = new Note(System.currentTimeMillis() , noteTitle.getText().toString() , noteContent.getText().toString() );
+            NoteOperations.deleteNote(getApplicationContext(),loadedNote.getDateTime()+NoteOperations.fileExtension);
+        }
+
         if(NoteOperations.saveNote(this , note)) {
             Toast.makeText(this , "Note Saved", Toast.LENGTH_SHORT).show();
             finish();
