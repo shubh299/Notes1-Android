@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="bold"
+        android:paddingLeft="5sp"
         android:textSize="25sp"
         android:hint="TITLE"
         android:id="@+id/note_title" />
@@ -23,6 +24,7 @@
         android:textSize="15sp"
         android:hint="CONTENT"
         android:background="#0000"
+        android:paddingLeft="5sp"
         android:id="@+id/note_content" />
 
 </LinearLayout>

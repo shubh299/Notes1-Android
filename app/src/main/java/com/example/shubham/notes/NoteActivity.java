@@ -31,6 +31,11 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        saveNote();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_note , menu);
         return true;
@@ -85,7 +90,7 @@ public class NoteActivity extends AppCompatActivity {
         }
 
         if(NoteOperations.saveNote(this , note)) {
-            Toast.makeText(this , "Note Saved", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this , "Note Saved", Toast.LENGTH_SHORT).show();
             finish();
         }
         else
