@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         notesListView.setAdapter(null);
         ArrayList<Note> notes = NoteOperations.getAllSavedNotes(this);
         if(notes == null || notes.size()==0){
-            Toast.makeText(this,"No notes saved",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,"No notes saved",Toast.LENGTH_SHORT).show();
             return;
         }
         else{

@@ -22,6 +22,7 @@
         android:gravity="top"
         android:textSize="15sp"
         android:hint="CONTENT"
+        android:background="#0000"
         android:id="@+id/note_content" />
 
 </LinearLayout>
