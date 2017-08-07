@@ -39,7 +39,6 @@ public class NoteOperations {
 
     public static ArrayList<Note> getAllSavedNotes (Context context) {
         ArrayList<Note> notes = new ArrayList<>();
-
         File filesDir = context.getFilesDir();
         ArrayList<String> noteFiles = new ArrayList<>();
 
@@ -47,6 +46,8 @@ public class NoteOperations {
             if(file.endsWith(fileExtension))
                 noteFiles.add(file);
         }
+
+        Collections.sort(noteFiles);
 
         FileInputStream fis;
         ObjectInputStream ois;
