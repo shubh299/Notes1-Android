@@ -1,6 +1,7 @@
 package com.example.shubham.notes;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -50,6 +51,8 @@ public class NoteActivity extends AppCompatActivity {
             case R.id.delete_note:
                 deleteNote();
                 break;
+            case R.id.share_note:
+                shareNote();
             default:
                 break;
         }
@@ -95,5 +98,19 @@ public class NoteActivity extends AppCompatActivity {
         }
         else
             Toast.makeText(this , "Cannot save note, please free your disk space ", Toast.LENGTH_SHORT).show();
+    }
+
+    private void shareNote(){
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("text/plain");
+        String contentShare = noteTitle.getText().toString() + "\n" + noteContent.getText().toString();
+        if(contentShare.isEmpty())
+            Toast.makeText(this,"Nothing to share",Toast.LENGTH_SHORT).show();
+        //share.putExtra(Intent.EXTRA_SUBJECT,noteTitle.getText().toString());
+        //share.putExtra(Intent.EXTRA_TEXT,noteContent.getText().toString());
+        else {
+            share.putExtra(Intent.EXTRA_TEXT, contentShare);
+            startActivity(Intent.createChooser(share, "Share Via"));
+        }
     }
 }
